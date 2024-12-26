@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-26 22:52:33
+ * @LastEditTime : 2024-12-26 23:32:15
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -30,7 +30,7 @@ int checkEnd(char* startStr,char* endStr)
 //     //找下一个单词，如果没有找到，则将*strPtr修改为endPtr+1.
 // }
 //这个函数用strchr函数替代。
-int editStrPtr(char** strPtr)//修改下一次搜索的起始位置
+int editStrPtr(const char** strPtr)//修改下一次搜索的起始位置
 {
     if(strchr(*strPtr,' ')==NULL)
     {
@@ -43,7 +43,7 @@ int editStrPtr(char** strPtr)//修改下一次搜索的起始位置
         return 0;
     }
 }
-int getElementName(char** strPtr,const char* endPtr,NAME* name)
+int getElementName(const char** strPtr,const char* endPtr,NAME* name)
 {
     switch(**strPtr)
     {
@@ -77,7 +77,7 @@ int getElementName(char** strPtr,const char* endPtr,NAME* name)
 }
 void getCorlor(const char* strPtr,const char* endPtr,struct element* element)
 {
-    char* _t;
+    const char* _t;
     if((_t=strSearch(strPtr,endPtr,"color="))!=NULL)//处理颜色
     {
         _t+=strlen("color=");
@@ -99,33 +99,25 @@ void getCorlor(const char* strPtr,const char* endPtr,struct element* element)
 }
 void getDirection(const char* strPtr,const char* endPtr,struct element* element)
 {
-    char* _t;
+    const char* _t;
     if((_t=strSearch(strPtr,endPtr,"direction="))!=NULL)
     {
         _t+=strlen("direction=");
         char *_startPtr=strchr(_t,'"')+1;
         char *_endPtr=strchr(_startPtr,'"');
-        if(strSearch(_startPtr,_endPtr,"start")!=NULL)
+        if(strSearch(_startPtr,_endPtr,"row")!=NULL)
         {
-            element->align=START;
+            element->direction=ROW;
         }
-        else if(strSearch(_startPtr,_endPtr,"center")!=NULL)
+        else if(strSearch(_startPtr,_endPtr,"column")!=NULL)
         {
-            element->align=CENTER;
-        }
-        else if(strSearch(_startPtr,_endPtr,"end")!=NULL)
-        {
-            element->align=END;
-        }
-        else if(strSearch(_startPtr,_endPtr,"space-evenly")!=NULL)
-        {
-            element->align=SPACE_EVENLY;
+            element->direction=COLUMN;
         }
     }
 }
 void getAlign_Items(const char* strPtr,const char* endPtr,struct element* element)
 {
-    char* _t;
+    const char* _t;
     if((_t=strSearch(strPtr,endPtr,"align-items="))!=NULL)
     {
         _t+=strlen("align-items=");
@@ -151,7 +143,7 @@ void getAlign_Items(const char* strPtr,const char* endPtr,struct element* elemen
 }
 void getJustify_Content(const char* strPtr,const char* endPtr,struct element* element)
 {
-    char* _t;
+    const char* _t;
     if((_t=strSearch(strPtr,endPtr,"justify-content="))!=NULL)
     {
         _t+=strlen("justify-content=");
@@ -159,15 +151,23 @@ void getJustify_Content(const char* strPtr,const char* endPtr,struct element* el
         char *_endPtr=strchr(_startPtr,'"');
         if(strSearch(_startPtr,_endPtr,"start")!=NULL)
         {
-            element->direction=ROW;
+            element->justify=START;
         }
-        else if(strSearch(_startPtr,_endPtr,"column")!=NULL)
+        else if(strSearch(_startPtr,_endPtr,"center")!=NULL)
         {
-            element->direction=COLUMN;
+            element->justify=CENTER;
+        }
+        else if(strSearch(_startPtr,_endPtr,"end")!=NULL)
+        {
+            element->justify=END;
+        }
+        else if(strSearch(_startPtr,_endPtr,"space-evenly")!=NULL)
+        {
+            element->justify=SPACE_EVENLY;
         }
     }
 }
-int getAttribute(char** strPtr,const char* endPtr,struct element* element)
+int getAttribute(const char** strPtr,const char* endPtr,struct element* element)
 {
     getCorlor(*strPtr,endPtr,element);
     getDirection(*strPtr,endPtr,element);
@@ -197,18 +197,13 @@ int getAttribute(char** strPtr,const char* endPtr,struct element* element)
     {
         element->width=atoi(strSearch(*strPtr,endPtr,"width=")+1);
     }
-    return editStrPtr(strPtr);
+    *strPtr=strchr(*strPtr,'>')+1;
+    return 0;//editStrPtr(strPtr);
 }
-int parseBracket(char* startStr,const char* endStr,struct element* element)
+int parseBracket(const char* startStr,const char* endStr,struct element* element)
 {
     //属性名：h，p，img，div
     getElementName(&startStr,endStr,&(element->name));//修改attribute的element值
-    while(startStr<=endStr)
-    {
-        if(getAttribute(&startStr,endStr,element)==1)
-        {
-            break;
-        }
-    }
+    getAttribute(&startStr,endStr,element);
     return 0;
 }

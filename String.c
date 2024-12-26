@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 18:58:47
- * @LastEditTime : 2024-12-26 21:24:55
+ * @LastEditTime : 2024-12-26 23:15:33
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : String.c
@@ -10,16 +10,16 @@
 //c库函数里面的String操作函数太难用了！
 //我要用迭代器思维重写一遍！
 #include"String.h"
-char* strSearch(const char* startPtr,const char* endPtr,const char* target)
+const char* strSearch(const char* startPtr,const char* endPtr,const char* target)
 {
-    char* cur=(char*)startPtr;
+    const char* cur=startPtr;
     do
     {
         if(*cur==*target)
         {
             if(memcmp(cur,target,strlen(target))==0)
             {
-                return cur;;//+strlen(target);
+                return cur;//+strlen(target);
             }
         }
         cur++;
