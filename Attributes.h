@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-26 18:52:16
+ * @LastEditTime : 2024-12-26 22:39:30
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -9,8 +9,11 @@
  */
 #ifndef __ATTRIBUTES_H__
 #define __ATTRIBUTES_H__
-#define bool short
+
 #include<string.h>
+#include<stdbool.h>
+#include<stdlib.h>
+#include"String.h"
 typedef enum NAME{
     HEADING,PARAGARPH,IMAGE,DIV
 }NAME;
@@ -20,12 +23,14 @@ typedef enum COLOR{
 typedef enum DIRECTION{
     ROW,COLUMN
 }DIRECTION;
-typedef enum ALIN{
+typedef enum ALIGN{
     START,END,CENTER,SPACE_EVENLY
-}ALIN;
+}ALIGN;
 struct element{
     COLOR color;
     NAME name;
+    DIRECTION direction;
+    ALIGN align;
     bool em;
     bool i;
     bool u;

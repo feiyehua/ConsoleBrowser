@@ -15,7 +15,7 @@
 
 int main()
 {
-    char a[]="ahdhkekjackjhewiuajcjad";
-    printf("%s",strSearch(&a[0],getEnd(a),"hke"));
+    char a[]="aashd32adksh";
+    printf("%d",atoi(&a[5]));
     return 0;
 }

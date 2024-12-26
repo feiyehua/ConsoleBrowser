@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-26 18:53:36
+ * @LastEditTime : 2024-12-26 22:52:33
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -9,7 +9,6 @@
  */
 
 #include"Attributes.h"
-#define bool short
 int checkEnd(char* startStr,char* endStr)
 {
     for(;startStr<=endStr;startStr++)
@@ -76,9 +75,128 @@ int getElementName(char** strPtr,const char* endPtr,NAME* name)
     //jumpToNextWord(strPtr,endPtr);
     return editStrPtr(strPtr);
 }
+void getCorlor(const char* strPtr,const char* endPtr,struct element* element)
+{
+    char* _t;
+    if((_t=strSearch(strPtr,endPtr,"color="))!=NULL)//处理颜色
+    {
+        _t+=strlen("color=");
+        char *_startPtr=strchr(_t,'"')+1;
+        char *_endPtr=strchr(_startPtr,'"');
+        if(strSearch(_startPtr,_endPtr,"red")!=NULL)
+        {
+            element->color=RED;
+        }
+        else if(strSearch(_startPtr,_endPtr,"green")!=NULL)
+        {
+            element->color=GREEN;
+        }
+        else if(strSearch(_startPtr,_endPtr,"blue")!=NULL)
+        {
+            element->color=BLUE;
+        }
+    }
+}
+void getDirection(const char* strPtr,const char* endPtr,struct element* element)
+{
+    char* _t;
+    if((_t=strSearch(strPtr,endPtr,"direction="))!=NULL)
+    {
+        _t+=strlen("direction=");
+        char *_startPtr=strchr(_t,'"')+1;
+        char *_endPtr=strchr(_startPtr,'"');
+        if(strSearch(_startPtr,_endPtr,"start")!=NULL)
+        {
+            element->align=START;
+        }
+        else if(strSearch(_startPtr,_endPtr,"center")!=NULL)
+        {
+            element->align=CENTER;
+        }
+        else if(strSearch(_startPtr,_endPtr,"end")!=NULL)
+        {
+            element->align=END;
+        }
+        else if(strSearch(_startPtr,_endPtr,"space-evenly")!=NULL)
+        {
+            element->align=SPACE_EVENLY;
+        }
+    }
+}
+void getAlign_Items(const char* strPtr,const char* endPtr,struct element* element)
+{
+    char* _t;
+    if((_t=strSearch(strPtr,endPtr,"align-items="))!=NULL)
+    {
+        _t+=strlen("align-items=");
+        char *_startPtr=strchr(_t,'"')+1;
+        char *_endPtr=strchr(_startPtr,'"');
+        if(strSearch(_startPtr,_endPtr,"start")!=NULL)
+        {
+            element->align=START;
+        }
+        else if(strSearch(_startPtr,_endPtr,"center")!=NULL)
+        {
+            element->align=CENTER;
+        }
+        else if(strSearch(_startPtr,_endPtr,"end")!=NULL)
+        {
+            element->align=END;
+        }
+        else if(strSearch(_startPtr,_endPtr,"space-evenly")!=NULL)
+        {
+            element->align=SPACE_EVENLY;
+        }
+    }
+}
+void getJustify_Content(const char* strPtr,const char* endPtr,struct element* element)
+{
+    char* _t;
+    if((_t=strSearch(strPtr,endPtr,"justify-content="))!=NULL)
+    {
+        _t+=strlen("justify-content=");
+        char *_startPtr=strchr(_t,'"')+1;
+        char *_endPtr=strchr(_startPtr,'"');
+        if(strSearch(_startPtr,_endPtr,"start")!=NULL)
+        {
+            element->direction=ROW;
+        }
+        else if(strSearch(_startPtr,_endPtr,"column")!=NULL)
+        {
+            element->direction=COLUMN;
+        }
+    }
+}
 int getAttribute(char** strPtr,const char* endPtr,struct element* element)
 {
-    
+    getCorlor(*strPtr,endPtr,element);
+    getDirection(*strPtr,endPtr,element);
+    getAlign_Items(*strPtr,endPtr,element);
+    getJustify_Content(*strPtr,endPtr,element);
+    if(strSearch(*strPtr,endPtr," em ")!=NULL)
+    {
+        element->em=1;
+    }
+    if(strSearch(*strPtr,endPtr," i ")!=NULL)
+    {
+        element->i=1;
+    }
+    if(strSearch(*strPtr,endPtr," u ")!=NULL)
+    {
+        element->u=1;
+    }
+    if(strSearch(*strPtr,endPtr,"w=")!=NULL)
+    {
+        element->w=atoi(strSearch(*strPtr,endPtr,"w=")+1);
+    }
+    if(strSearch(*strPtr,endPtr,"h=")!=NULL)
+    {
+        element->h=atoi(strSearch(*strPtr,endPtr,"h=")+1);
+    }
+    if(strSearch(*strPtr,endPtr,"width=")!=NULL)
+    {
+        element->width=atoi(strSearch(*strPtr,endPtr,"width=")+1);
+    }
     return editStrPtr(strPtr);
 }
 int parseBracket(char* startStr,const char* endStr,struct element* element)
@@ -94,5 +212,3 @@ int parseBracket(char* startStr,const char* endStr,struct element* element)
     }
     return 0;
 }
-
-#undef bool
