@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-16 16:07:53
- * @LastEditTime : 2024-12-26 00:36:14
+ * @LastEditTime : 2024-12-26 20:39:24
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : main.c
@@ -11,17 +11,11 @@
 #include<stdio.h>
 #define bool short
 #include"ReadInput.h"
-void getAttri(char * a)
-{
-    ;;;
-}
+#include"String.h"
 
 int main()
 {
-    int length;
-    char* a;
-    readInput(&length,&a);
-    printf("%s",a);
-
-    free(a);
+    char a[]="ahdhkekjackjhewiuajcjad";
+    printf("%s",strSearch(&a[0],getEnd(a),"hke"));
+    return 0;
 }

@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-26 11:37:00
+ * @LastEditTime : 2024-12-26 18:52:16
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -11,9 +11,9 @@
 #define __ATTRIBUTES_H__
 #define bool short
 #include<string.h>
-typedef enum ELEMENT{
+typedef enum NAME{
     HEADING,PARAGARPH,IMAGE,DIV
-}ELEMENT;
+}NAME;
 typedef enum COLOR{
     RED,BLUE,GREEN
 }COLOR;
@@ -23,9 +23,9 @@ typedef enum DIRECTION{
 typedef enum ALIN{
     START,END,CENTER,SPACE_EVENLY
 }ALIN;
-struct attribute{
+struct element{
     COLOR color;
-    ELEMENT element;
+    NAME name;
     bool em;
     bool i;
     bool u;
@@ -34,13 +34,16 @@ struct attribute{
     char src[100];
     int width;
 };
-int getAttribute(char* str,struct attribute** attribute);
+int getAttribute(char** strPtr,const char* endPtr,struct element* element);
 //解析字符串，获取attribute
 int checkEnd(char* startStr,char* endStr);
 //检查一个括号内是否有/
-void getElement(char** strPtr,const char* endPtr,ELEMENT* element)
+int getElementName(char** strPtr,const char* endPtr,NAME* name);
 //解析一个元素的元素名
-int parseBracket(char* startStr,const char* endStr,struct attribute* attribute);
+
+//如果尖括号内还有其他属性，则返回0，strPtr修改到第一个属性的起始位置；
+//如果尖括号内没有其他属性，则返回1，strPtr修改到尖括号末
+int parseBracket(char* startStr,const char* endStr,struct element* attribute);
 //解析括号里的字符、属性
 #undef bool
 #endif

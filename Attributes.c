@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-26 11:42:45
+ * @LastEditTime : 2024-12-26 18:53:36
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -10,11 +10,6 @@
 
 #include"Attributes.h"
 #define bool short
-int getAttribute(char* str,struct attribute* attribute)
-{
-    
-    
-}
 int checkEnd(char* startStr,char* endStr)
 {
     for(;startStr<=endStr;startStr++)
@@ -26,38 +21,51 @@ int checkEnd(char* startStr,char* endStr)
     }
     return 0;
 }
-void jumpToNextWord(char** strPtr,const char* endPtr)
+// void jumpToNextWord(char** strPtr,const char* endPtr)
+// {
+//     while(**strPtr!=' '&&*strPtr<endPtr)
+//     {
+//         (*strPtr)++;
+//     }
+//     (*strPtr)++;
+//     //找下一个单词，如果没有找到，则将*strPtr修改为endPtr+1.
+// }
+//这个函数用strchr函数替代。
+int editStrPtr(char** strPtr)//修改下一次搜索的起始位置
 {
-    while(**strPtr!=' '&&*strPtr<endPtr)
+    if(strchr(*strPtr,' ')==NULL)
     {
-        (*strPtr)++;
+        *strPtr=strchr(*strPtr,'>')+1;//没有其他属性
+        return 1;
     }
-    (*strPtr)++;
-    //找下一个单词，如果没有找到，则将*strPtr修改为endPtr+1.
+    else
+    {
+        *strPtr=strchr(*strPtr,' ')+1;
+        return 0;
+    }
 }
-
-void getElement(char** strPtr,const char* endPtr,ELEMENT* element)
+int getElementName(char** strPtr,const char* endPtr,NAME* name)
 {
     switch(**strPtr)
     {
         case 'h':
         {
-            *element=HEADING;
+            *name=HEADING;
             break;
         }
         case 'p':
         {
-            *element=PARAGARPH;
+            *name=PARAGARPH;
             break;
         }
         case 'i':
         {
-            *element=IMAGE;
+            *name=IMAGE;
             break;
         }
         case 'd':
         {
-            *element=DIV;
+            *name=DIV;
             break;
         }
         default:
@@ -65,13 +73,26 @@ void getElement(char** strPtr,const char* endPtr,ELEMENT* element)
             break;
         }
     }
-    jumpToNextWord(strPtr,endPtr);
+    //jumpToNextWord(strPtr,endPtr);
+    return editStrPtr(strPtr);
 }
-int parseBracket(char* startStr,const char* endStr,struct attribute* attribute)
+int getAttribute(char** strPtr,const char* endPtr,struct element* element)
+{
+    
+    return editStrPtr(strPtr);
+}
+int parseBracket(char* startStr,const char* endStr,struct element* element)
 {
     //属性名：h，p，img，div
-    getElement(&startStr,endStr,&(attribute->element));//修改attribute的element值
-    
+    getElementName(&startStr,endStr,&(element->name));//修改attribute的element值
+    while(startStr<=endStr)
+    {
+        if(getAttribute(&startStr,endStr,element)==1)
+        {
+            break;
+        }
+    }
+    return 0;
 }
 
 #undef bool
