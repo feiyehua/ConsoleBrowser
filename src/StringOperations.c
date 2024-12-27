@@ -9,7 +9,7 @@
  */
 //c库函数里面的String操作函数太难用了！
 //我要用迭代器思维重写一遍！
-#include"String.h"
+#include"StringOperations.h"
 const char* strSearch(const char* startPtr,const char* endPtr,const char* target)
 {
     const char* cur=startPtr;

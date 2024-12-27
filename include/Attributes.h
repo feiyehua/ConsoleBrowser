@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-27 15:28:14
+ * @LastEditTime : 2024-12-27 17:46:33
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -13,7 +13,7 @@
 #include<string.h>
 #include<stdbool.h>
 #include<stdlib.h>
-#include"String.h"
+#include"StringOperations.h"
 typedef enum NAME{
     HEADING,PARAGARPH,IMAGE,DIV
 }NAME;

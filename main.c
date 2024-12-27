@@ -10,7 +10,7 @@
 
 #include<stdio.h>
 #include"ReadInput.h"
-#include"String.h"
+#include"StringOperations.h"
 #include"Attributes.h"
 #include"InputParser.h"
 #include"Stack.h"
