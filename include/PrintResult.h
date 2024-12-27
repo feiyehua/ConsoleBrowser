@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 18:03:07
- * @LastEditTime : 2024-12-27 20:25:01
+ * @LastEditTime : 2024-12-27 23:27:20
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : PrintResult.h
@@ -12,5 +12,5 @@
 
 #include"Array.h"
 #include"stdio.h"
-
+void printResult(OutputArray** loc,int screenWidth,int screenHeight);
 #endif // PRINTRESULT_H

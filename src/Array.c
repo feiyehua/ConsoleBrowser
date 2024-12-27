@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 15:36:49
- * @LastEditTime : 2024-12-27 17:39:12
+ * @LastEditTime : 2024-12-27 20:33:06
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Array.c
@@ -20,7 +20,7 @@ OutputArray** allocateArray(int m,int n)
         for(int j=0;j<n;j++)
         {
             loc[i][j].el=NULL;
-            loc[i][j].c=0;
+            loc[i][j].c=' ';
         }
     }
     return loc;

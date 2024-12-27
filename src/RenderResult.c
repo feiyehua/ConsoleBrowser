@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 18:06:43
- * @LastEditTime : 2024-12-27 19:48:29
+ * @LastEditTime : 2024-12-27 23:32:55
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : RenderResult.c
@@ -84,12 +84,12 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
 }
 void renderContens(element* el,OutputArray** outputArray,int x,int y)
 {
-    outputArray[x][y].el=el;//方便访问元素的属性
     for(int j=0;j<el->h;j++)
     {
         for (int i = 0; i < el->w; i++)
         {
             outputArray[x + i][y + j].c = *((el->content) + i + j * el->w);
+            outputArray[x + i][y + j].el = el; // 方便访问元素的属性
         }
     }
 }

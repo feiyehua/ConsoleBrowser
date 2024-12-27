@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 20:18:11
- * @LastEditTime : 2024-12-27 20:25:20
+ * @LastEditTime : 2024-12-27 23:31:06
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : PrintResult.c
@@ -41,7 +41,44 @@ void printNormal()
 {
     printf("\033[0m");
 }
-void printResult()
+void printFormat(element* element)
 {
-    
+    if(element==NULL) 
+    {
+        return;
+    }
+    if(element->color!=BLACK)
+    {
+        printColor(element->color);
+    }
+    if(element->em)
+    {
+        printEmphasis();
+    }
+    if(element->i)
+    {
+        printItalic();
+    }
+    if(element->u)
+    {
+        printUnderline();
+    }
+}
+void printResult(OutputArray** loc,int screenWidth,int screenHeight)
+{
+    element* lastElement=NULL;
+    for(int i=0;i<screenHeight;i++)
+    {
+        for(int j=0;j<screenWidth;j++)
+        {
+            if(lastElement!=loc[j][i].el)
+            {
+                printNormal();
+                printFormat(loc[j][i].el);
+                lastElement=loc[j][i].el;
+            }
+            printf("%c",loc[j][i].c);
+        }
+        printf("\n");
+    }
 }

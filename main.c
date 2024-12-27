@@ -34,6 +34,6 @@ int main()
     parseInput(a,el,&stack);
     OutputArray** loc=allocateArray(screenWidth,screenHeight);
     renderDiv(el,loc,0,0);
-    
+    printResult(loc,screenWidth,screenHeight);
     return 0;
 }
