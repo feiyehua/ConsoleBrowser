@@ -1,18 +1,32 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 18:06:43
- * @LastEditTime : 2024-12-28 00:27:49
+ * @LastEditTime : 2024-12-28 00:34:59
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : RenderResult.c
  *      © 2024 FeiYehua
  */
 #include"RenderResult.h"
+int getNumberOfElement(element* startElement,element* endElement)
+{
+    int cnt=0;
+    while(startElement<=endElement)
+    {
+        cnt++;
+        if(startElement->name==DIV)
+        {
+            startElement=startElement->endDiv;
+        }
+        startElement++;
+    }
+    return cnt;
+}
 void renderDiv(element* el,OutputArray** outputArray,int x,int y)
 {
     element* endEle=el->endDiv;
     element* cur=el+1;
-    int numOfElement=endEle-el;
+    int numOfElement=getNumberOfElement(cur,endEle);
     int wHeight = el->h - el->contentHeight;
     int wWidth = el->w - el->contentWidth;
     if (el->direction == COLUMN)
