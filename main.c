@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-16 16:07:53
- * @LastEditTime : 2024-12-26 23:19:15
+ * @LastEditTime : 2024-12-27 15:22:50
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : main.c
@@ -13,16 +13,21 @@
 #include"String.h"
 #include"Attributes.h"
 #include"InputParser.h"
+#include"Stack.h"
+const int screenHeight=10;
+const int screenWidth=50;
 struct element el[1000];
 char *a;
 int len;
+Stack stack={0,NULL};
 int main()
 {
+    el[0].h=screenHeight;
+    el[0].w=screenWidth;
+    el[0].name=DIV;
+    stackPush(&stack,0);
     freopen("cases/1.in","r",stdin);
-    //scanf("%s",a);
     readInput(&len,&a);
-    //parseBracket(a,getEnd(a),&el);
-    parseInput(a,el);
-    //printf("%d",atoi(&a[5]));
+    parseInput(a,el,&stack);
     return 0;
 }

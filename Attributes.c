@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-27 09:45:12
+ * @LastEditTime : 2024-12-27 15:30:33
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -221,28 +221,63 @@ int parseBracket(const char* startStr,const char* endStr,struct element* element
 }
 void inheritAttribute(element* dest,const element* src)
 {
-    dest->color=src->color;
-    dest->em=src->em;
-    dest->i=src->i;
-    dest->u=src->u;
+    if(src->name==DIV)
+    {
+        dest->color = src->color;
+        dest->em = src->em;
+        dest->i = src->i;
+        dest->u = src->u;
+    }
 }
 void updateDiv(element* el,int start,int end)
 {
-    if(el[start].w==0&&el[start].h==0)
+    //统计Div内实际内容宽高，方便后续对齐
+    for (int i = start + 1; i <= end; i++)
+    {
+        if (el[start].direction == COLUMN)
+        {
+            el[start].contentWidth += el[i].w;
+        }
+        if (el[i].name == DIV)
+        {
+            i = el[i].endDiv;
+        }
+    }
+    for (int i = start + 1; i <= end; i++)
+    {
+        if (el[start].direction == ROW)
+        {
+            el[start].contentHeight += el[i].h;
+        }
+        if (el[i].name == DIV)
+        {
+            i = el[i].endDiv;
+        }
+    }
+    //如果已经指定了宽高，可以直接返回
+    if(el[start].w!=0&&el[start].h!=0)
     {
         return;
     }
+    //没有指定宽度，则需要统计出内容宽度
     if (el[start].w == 0)//处理宽度
     {
         for (int i = start + 1; i <= end; i++)
         {
-            if (el[start].direction == ROW&&el[i].w>el[start].w)
+            if (el[start].direction == ROW)
             {
-                el[start].w=el[i].w;
+                if(el[i].w>el[start].w)
+                {
+                    el[start].w = el[i].w;
+                }
             }
             else
             {
                 el[start].w+=el[i].w;
+            }
+            if(el[i].name==DIV)
+            {
+                i=el[i].endDiv;
             }
         }
     }
@@ -250,13 +285,20 @@ void updateDiv(element* el,int start,int end)
     {
         for (int i = start + 1; i <= end; i++)
         {
-            if (el[start].direction == COLUMN&&el[i].h>el[start].h)
+            if (el[start].direction == COLUMN)
             {
-                el[start].h=el[i].h;
+                if (el[i].h > el[start].h)
+                {
+                    el[start].h = el[i].h;
+                }
             }
             else
             {
                 el[start].h+=el[i].h;
+            }
+            if(el[i].name==DIV)
+            {
+                i=el[i].endDiv;
             }
         }
     }
