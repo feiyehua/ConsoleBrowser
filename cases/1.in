@@ -1,5 +1,31 @@
-<h u em>Lorem ipsum</h>
-<p color="green">Lorem ipsum dolor sit amet, Lorem ipsum sit amet.</p>
-<p i>Ut enim ad minim veniam, quis nostrud exercition.</p>
-<p u>Lit, sed do eiusmod incididunt ut labore et dole.</p>
-<p em>voluptate velit esse cillum dolore eu fugiat null.</p>
+<div
+     w="50"
+     h="10"
+     direction="row"
+     justify-content="center"
+     align-items="space-evenly"
+     >
+    <p>ELEMENT</p>
+    <div
+         w="20"
+         direction="column"
+         justify-content="start"
+         >
+        <p>ELEMENT</p>
+        <p>ELEMENT</p>
+    </div>
+    <div 
+         w="30"
+         direction="column"
+         justify-content="end"
+         >
+        <p>ELEMENT</p>
+        <p>ELEMENT</p>
+        <p>ELEMENT</p>
+    </div>
+    <img
+         src="@@@@@@"
+         width="3"
+         >
+	</img>
+</div>

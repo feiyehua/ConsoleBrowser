@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 18:06:43
- * @LastEditTime : 2024-12-27 23:32:55
+ * @LastEditTime : 2024-12-28 00:27:49
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : RenderResult.c
@@ -13,62 +13,88 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
     element* endEle=el->endDiv;
     element* cur=el+1;
     int numOfElement=endEle-el;
-    int w;
-    if(el->direction==ROW)
-    {
-        w=el->h-el->contentHeight;
-    }
-    else
-    {
-        w=el->w-el->contentWidth;
-    }
+    int wHeight = el->h - el->contentHeight;
+    int wWidth = el->w - el->contentWidth;
     if (el->direction == COLUMN)
     {
         if (el->justify == END)
         {
-            x += w;
+            x += wWidth;
         }
         else if (el->justify == CENTER)
         {
-            x += (w / 2);
+            x += (wWidth / 2);
         }
         else if(el->justify==SPACE_EVENLY)
         {
-            x+=(w/(numOfElement+1));
+            x+=(wWidth/(numOfElement+1));
         }
     }
     else if (el->direction == ROW)
     {
         if (el->align == END)
         {
-            y += w;
+            y += wHeight;
         }
         else if (el->align == CENTER)
         {
-            y += (w / 2);
+            y += (wHeight / 2);
         }
         else if(el->align==SPACE_EVENLY)
         {
-            y+=(w/(numOfElement+1));
+            y+=(wHeight/(numOfElement+1));
         }
     }
     while(cur<=endEle)
     {
+        int printLocX=x;
+        int printLocY=y;
+        if(el->direction==ROW)
+        {
+            int white=el->w-cur->w;
+            if (el->justify == END)
+            {
+                printLocX += white;
+            }
+            else if (el->justify == CENTER)
+            {
+                printLocX += (white / 2);
+            }
+            else if (el->justify == SPACE_EVENLY)
+            {
+                printLocX += (white / (1 + 1));
+            }
+        }
+        if(el->direction==COLUMN)
+        {
+            int white=el->h-cur->h;
+            if (el->align == END)
+            {
+                printLocY += white;
+            }
+            else if (el->align == CENTER)
+            {
+                printLocY += (white / 2);
+            }
+            else if (el->align == SPACE_EVENLY)
+            {
+                printLocY += (white / (1 + 1));
+            }
+        }
         if(cur->name==DIV)
         {
-            renderDiv(cur,outputArray,x,y);
-            cur=cur->endDiv;
+            renderDiv(cur,outputArray,printLocX,printLocY);
         }
         else
         {
-            renderContens(cur,outputArray,x,y);
+            renderContens(cur,outputArray,printLocX,printLocY);
         }
         if(el->direction==COLUMN)
         {
             x+=cur->w;
             if(el->justify==SPACE_EVENLY)
             {
-                x+=(w/(numOfElement+1));
+                x+=(wWidth/(numOfElement+1));
             }
         }
         else if(el->direction==ROW)
@@ -76,8 +102,12 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
             y+=cur->h;
             if(el->align==SPACE_EVENLY)
             {
-                y+=(w/(numOfElement+1));
+                y+=(wHeight/(numOfElement+1));
             }
+        }
+        if(cur->name==DIV)
+        {
+            cur=cur->endDiv;
         }
         cur++;
     }
@@ -89,6 +119,10 @@ void renderContens(element* el,OutputArray** outputArray,int x,int y)
         for (int i = 0; i < el->w; i++)
         {
             outputArray[x + i][y + j].c = *((el->content) + i + j * el->w);
+            if(el->name==HEADING&&outputArray[x + i][y + j].c>='a'&&outputArray[x + i][y + j].c<='z')
+            {
+                outputArray[x + i][y + j].c=outputArray[x + i][y + j].c-'a'+'A';
+            }
             outputArray[x + i][y + j].el = el; // 方便访问元素的属性
         }
     }

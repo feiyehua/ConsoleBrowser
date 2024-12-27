@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-27 18:41:16
+ * @LastEditTime : 2024-12-28 00:22:50
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -105,7 +105,6 @@ void getDirection(const char* strPtr,const char* endPtr,struct element* element)
     const char* _t;
     if((_t=strSearch(strPtr,endPtr,"direction="))!=NULL)
     {
-        _t+=strlen("direction=");
         char *_startPtr=strchr(_t,'"')+1;
         char *_endPtr=strchr(_startPtr,'"');
         if(strSearch(_startPtr,_endPtr,"row")!=NULL)
