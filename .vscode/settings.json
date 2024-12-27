@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "inputparser.h": "c",
+        "attributes.h": "c",
+        "stdbool.h": "c"
+    }
+}

@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-27 08:28:58
+ * @LastEditTime : 2024-12-27 09:11:42
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -31,7 +31,7 @@ typedef struct ImageInfo{
     const char* str;
     size_t length;
 }ImageInfo;
-struct element{
+typedef struct element{
     COLOR color;
     NAME name;
     DIRECTION direction;
@@ -42,10 +42,14 @@ struct element{
     bool u;
     int w;
     int h;
+    const char* content;
+    size_t length;
     ImageInfo imgaeInfo;
-};
+}element;
+bool checkEnd(const char* startStr,const char* endStr);
+
 int parseBracket(const char* startStr,const char* endStr,struct element* attribute);
+void inheritAttribute(element* dest,const element* src);
 //解析括号里的字符、属性
 //传入参数为<后第一个字符和>位置的指针，一样是左闭右开
-#undef bool
 #endif

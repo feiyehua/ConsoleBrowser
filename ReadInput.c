@@ -21,6 +21,11 @@ int readInput(int* length,char** inputData)
             ch=getchar();
             continue;
         }
+        if(ch=='>')
+        {
+            *curloc=' ';
+            curloc++;
+        }
         *curloc=ch;
         curloc++;
         ch=getchar();

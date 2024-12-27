@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-27 08:49:55
+ * @LastEditTime : 2024-12-27 09:45:12
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -10,15 +10,15 @@
 
 #include"Attributes.h"
 //检查一个括号内是否有/
-int checkEnd(char* startStr,char* endStr)
+bool checkEnd(const char* startStr,const char* endStr)
 {
-    for(;startStr<=endStr;startStr++)
-    {
+    // for(;startStr<=endStr;startStr++)
+    // {
         if(*startStr=='/')
         {
             return 1;
         }
-    }
+    //}
     return 0;
 }
 // void jumpToNextWord(char** strPtr,const char* endPtr)
@@ -47,7 +47,7 @@ int editStrPtr(const char** strPtr)//修改下一次搜索的起始位置
 //解析一个元素的元素名
 //如果尖括号内还有其他属性，则返回0，strPtr修改到第一个属性的起始位置；
 //如果尖括号内没有其他属性，则返回1，strPtr修改到尖括号末
-int getElementName(const char** strPtr,const char* endPtr,NAME* name)
+void getElementName(const char** strPtr,const char* endPtr,NAME* name)
 {
     switch(**strPtr)
     {
@@ -77,7 +77,7 @@ int getElementName(const char** strPtr,const char* endPtr,NAME* name)
         }
     }
     //jumpToNextWord(strPtr,endPtr);
-    return editStrPtr(strPtr);
+    //return editStrPtr(strPtr);
 }
 void getCorlor(const char* strPtr,const char* endPtr,struct element* element)
 {
@@ -205,13 +205,59 @@ int getAttribute(const char** strPtr,const char* endPtr,struct element* element)
         element->imgaeInfo.str=_t;
         element->imgaeInfo.length=strSearch(_t,endPtr,"\"")-_t-1;
     }
-    *strPtr=strchr(*strPtr,'>')+1;
+    //*strPtr=strchr(*strPtr,'>')+1;
     return 0;//editStrPtr(strPtr);
 }
 int parseBracket(const char* startStr,const char* endStr,struct element* element)
 {
     //属性名：h，p，img，div
     getElementName(&startStr,endStr,&(element->name));//修改attribute的element值
+    if(element->name==PARAGARPH||element->name==HEADING)
+    {
+        element->h=1;
+    }
     getAttribute(&startStr,endStr,element);
     return 0;
+}
+void inheritAttribute(element* dest,const element* src)
+{
+    dest->color=src->color;
+    dest->em=src->em;
+    dest->i=src->i;
+    dest->u=src->u;
+}
+void updateDiv(element* el,int start,int end)
+{
+    if(el[start].w==0&&el[start].h==0)
+    {
+        return;
+    }
+    if (el[start].w == 0)//处理宽度
+    {
+        for (int i = start + 1; i <= end; i++)
+        {
+            if (el[start].direction == ROW&&el[i].w>el[start].w)
+            {
+                el[start].w=el[i].w;
+            }
+            else
+            {
+                el[start].w+=el[i].w;
+            }
+        }
+    }
+    if (el[start].h == 0)//处理高度
+    {
+        for (int i = start + 1; i <= end; i++)
+        {
+            if (el[start].direction == COLUMN&&el[i].h>el[start].h)
+            {
+                el[start].h=el[i].h;
+            }
+            else
+            {
+                el[start].h+=el[i].h;
+            }
+        }
+    }
 }

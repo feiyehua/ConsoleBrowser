@@ -12,7 +12,8 @@
 #include"ReadInput.h"
 #include"String.h"
 #include"Attributes.h"
-struct element el;
+#include"InputParser.h"
+struct element el[1000];
 char *a;
 int len;
 int main()
@@ -20,7 +21,8 @@ int main()
     freopen("cases/1.in","r",stdin);
     //scanf("%s",a);
     readInput(&len,&a);
-    parseBracket(a,getEnd(a),&el);
+    //parseBracket(a,getEnd(a),&el);
+    parseInput(a,el);
     //printf("%d",atoi(&a[5]));
     return 0;
 }
