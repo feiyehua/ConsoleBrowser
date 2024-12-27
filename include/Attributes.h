@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-27 17:46:33
+ * @LastEditTime : 2024-12-27 18:40:25
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -44,7 +44,8 @@ typedef struct element{
     int h;
     int contentWidth;
     int contentHeight;
-    int endDiv;
+    //int endDiv;
+    struct element* endDiv;
     const char* content;
     size_t length;
     ImageInfo imgaeInfo;

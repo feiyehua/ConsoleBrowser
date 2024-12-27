@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 08:53:03
- * @LastEditTime : 2024-12-27 15:26:46
+ * @LastEditTime : 2024-12-27 19:31:19
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : InputParser.c
@@ -23,7 +23,7 @@ void parseInput(const char* startPtr,element* el,Stack* stack)
                 {
                     int startDiv=stackTop(stack);
                     stackPop(stack);
-                    el[startDiv].endDiv=cnt-1;
+                    el[startDiv].endDiv=el+cnt-1;
                     updateDiv(el,startDiv,cnt-1);
                     const char* _t=strchr(endPtr, '<');
                     if(_t!=NULL)
@@ -52,6 +52,7 @@ void parseInput(const char* startPtr,element* el,Stack* stack)
                 {
                     el[cnt].w=el[cnt].imgaeInfo.width;
                     el[cnt].h=el[cnt].imgaeInfo.length/el[cnt].imgaeInfo.width;
+                    el[cnt].content=el[cnt].imgaeInfo.str;
                 }
                 cnt++;
             }
@@ -61,6 +62,6 @@ void parseInput(const char* startPtr,element* el,Stack* stack)
     }
     int startDiv=stackTop(stack);
     stackPop(stack);
-    el[startDiv].endDiv=cnt-1;
+    el[startDiv].endDiv=el+cnt-1;
     updateDiv(el,startDiv,cnt-1);
 }

@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-27 15:30:33
+ * @LastEditTime : 2024-12-27 18:41:16
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -240,7 +240,7 @@ void updateDiv(element* el,int start,int end)
         }
         if (el[i].name == DIV)
         {
-            i = el[i].endDiv;
+            i = el[i].endDiv-el;
         }
     }
     for (int i = start + 1; i <= end; i++)
@@ -251,7 +251,7 @@ void updateDiv(element* el,int start,int end)
         }
         if (el[i].name == DIV)
         {
-            i = el[i].endDiv;
+            i = el[i].endDiv-el;
         }
     }
     //如果已经指定了宽高，可以直接返回
@@ -277,7 +277,7 @@ void updateDiv(element* el,int start,int end)
             }
             if(el[i].name==DIV)
             {
-                i=el[i].endDiv;
+                i=el[i].endDiv-el;
             }
         }
     }
@@ -298,7 +298,7 @@ void updateDiv(element* el,int start,int end)
             }
             if(el[i].name==DIV)
             {
-                i=el[i].endDiv;
+                i=el[i].endDiv-el;
             }
         }
     }
