@@ -19,7 +19,7 @@ const char* strSearch(const char* startPtr,const char* endPtr,const char* target
         {
             if(memcmp(cur,target,strlen(target))==0)
             {
-                return cur;//+strlen(target);
+                return cur+strlen(target);
             }
         }
         cur++;

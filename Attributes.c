@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:27
- * @LastEditTime : 2024-12-26 23:32:15
+ * @LastEditTime : 2024-12-27 08:49:55
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.c
@@ -9,6 +9,7 @@
  */
 
 #include"Attributes.h"
+//检查一个括号内是否有/
 int checkEnd(char* startStr,char* endStr)
 {
     for(;startStr<=endStr;startStr++)
@@ -43,6 +44,9 @@ int editStrPtr(const char** strPtr)//修改下一次搜索的起始位置
         return 0;
     }
 }
+//解析一个元素的元素名
+//如果尖括号内还有其他属性，则返回0，strPtr修改到第一个属性的起始位置；
+//如果尖括号内没有其他属性，则返回1，strPtr修改到尖括号末
 int getElementName(const char** strPtr,const char* endPtr,NAME* name)
 {
     switch(**strPtr)
@@ -80,7 +84,6 @@ void getCorlor(const char* strPtr,const char* endPtr,struct element* element)
     const char* _t;
     if((_t=strSearch(strPtr,endPtr,"color="))!=NULL)//处理颜色
     {
-        _t+=strlen("color=");
         char *_startPtr=strchr(_t,'"')+1;
         char *_endPtr=strchr(_startPtr,'"');
         if(strSearch(_startPtr,_endPtr,"red")!=NULL)
@@ -120,7 +123,6 @@ void getAlign_Items(const char* strPtr,const char* endPtr,struct element* elemen
     const char* _t;
     if((_t=strSearch(strPtr,endPtr,"align-items="))!=NULL)
     {
-        _t+=strlen("align-items=");
         char *_startPtr=strchr(_t,'"')+1;
         char *_endPtr=strchr(_startPtr,'"');
         if(strSearch(_startPtr,_endPtr,"start")!=NULL)
@@ -146,7 +148,6 @@ void getJustify_Content(const char* strPtr,const char* endPtr,struct element* el
     const char* _t;
     if((_t=strSearch(strPtr,endPtr,"justify-content="))!=NULL)
     {
-        _t+=strlen("justify-content=");
         char *_startPtr=strchr(_t,'"')+1;
         char *_endPtr=strchr(_startPtr,'"');
         if(strSearch(_startPtr,_endPtr,"start")!=NULL)
@@ -167,6 +168,7 @@ void getJustify_Content(const char* strPtr,const char* endPtr,struct element* el
         }
     }
 }
+//解析字符串，获取attribute
 int getAttribute(const char** strPtr,const char* endPtr,struct element* element)
 {
     getCorlor(*strPtr,endPtr,element);
@@ -185,17 +187,23 @@ int getAttribute(const char** strPtr,const char* endPtr,struct element* element)
     {
         element->u=1;
     }
-    if(strSearch(*strPtr,endPtr,"w=")!=NULL)
+    if(strSearch(*strPtr,endPtr," w=")!=NULL)
     {
-        element->w=atoi(strSearch(*strPtr,endPtr,"w=")+1);
+        element->w=atoi(strSearch(*strPtr,endPtr," w=")+1);
     }
-    if(strSearch(*strPtr,endPtr,"h=")!=NULL)
+    if(strSearch(*strPtr,endPtr," h=")!=NULL)
     {
-        element->h=atoi(strSearch(*strPtr,endPtr,"h=")+1);
+        element->h=atoi(strSearch(*strPtr,endPtr," h=")+1);
     }
     if(strSearch(*strPtr,endPtr,"width=")!=NULL)
     {
-        element->width=atoi(strSearch(*strPtr,endPtr,"width=")+1);
+        element->imgaeInfo.width=atoi(strSearch(*strPtr,endPtr,"width=")+1);
+    }
+    if(strSearch(*strPtr,endPtr,"src=")!=NULL)
+    {
+        const char* _t=strSearch(*strPtr,endPtr,"src=")+1;
+        element->imgaeInfo.str=_t;
+        element->imgaeInfo.length=strSearch(_t,endPtr,"\"")-_t-1;
     }
     *strPtr=strchr(*strPtr,'>')+1;
     return 0;//editStrPtr(strPtr);

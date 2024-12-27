@@ -1,7 +1,7 @@
 /*** 
  * @Author       : FeiYehua
  * @Date         : 2024-12-26 11:01:33
- * @LastEditTime : 2024-12-26 23:22:15
+ * @LastEditTime : 2024-12-27 08:28:58
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : Attributes.h
@@ -26,6 +26,11 @@ typedef enum DIRECTION{
 typedef enum ALIGN{
     START,END,CENTER,SPACE_EVENLY
 }ALIGN;
+typedef struct ImageInfo{
+    size_t width;
+    const char* str;
+    size_t length;
+}ImageInfo;
 struct element{
     COLOR color;
     NAME name;
@@ -37,18 +42,8 @@ struct element{
     bool u;
     int w;
     int h;
-    char src[100];
-    int width;
+    ImageInfo imgaeInfo;
 };
-int getAttribute(const char** strPtr,const char* endPtr,struct element* element);
-//解析字符串，获取attribute
-int checkEnd(char* startStr,char* endStr);
-//检查一个括号内是否有/
-int getElementName(const char** strPtr,const char* endPtr,NAME* name);
-//解析一个元素的元素名
-
-//如果尖括号内还有其他属性，则返回0，strPtr修改到第一个属性的起始位置；
-//如果尖括号内没有其他属性，则返回1，strPtr修改到尖括号末
 int parseBracket(const char* startStr,const char* endStr,struct element* attribute);
 //解析括号里的字符、属性
 //传入参数为<后第一个字符和>位置的指针，一样是左闭右开
