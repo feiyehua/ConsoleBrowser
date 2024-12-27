@@ -1,7 +1,7 @@
 /*
  * @Author       : FeiYehua
  * @Date         : 2024-12-27 18:06:43
- * @LastEditTime : 2024-12-28 00:34:59
+ * @LastEditTime : 2024-12-28 00:44:02
  * @LastEditors  : FeiYehua
  * @Description  : 
  * @FilePath     : RenderResult.c
@@ -61,8 +61,9 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
     }
     while(cur<=endEle)
     {
-        int printLocX=x;
+        int printLocX=x;//这个是开始打印的横、纵坐标
         int printLocY=y;
+        //按照行排列，考虑单个元素如何在横向对齐。
         if(el->direction==ROW)
         {
             int white=el->w-cur->w;
@@ -95,6 +96,7 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
                 printLocY += (white / (1 + 1));
             }
         }
+        //打印元素
         if(cur->name==DIV)
         {
             renderDiv(cur,outputArray,printLocX,printLocY);
@@ -103,9 +105,11 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
         {
             renderContens(cur,outputArray,printLocX,printLocY);
         }
+        //如果是按列排列，则更新x坐标
         if(el->direction==COLUMN)
         {
             x+=cur->w;
+            //注意等间距对齐时的特殊处理
             if(el->justify==SPACE_EVENLY)
             {
                 x+=(wWidth/(numOfElement+1));
@@ -119,6 +123,7 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
                 y+=(wHeight/(numOfElement+1));
             }
         }
+        //如果是一个Div，则跳过其中的元素，避免重复渲染
         if(cur->name==DIV)
         {
             cur=cur->endDiv;
@@ -126,6 +131,7 @@ void renderDiv(element* el,OutputArray** outputArray,int x,int y)
         cur++;
     }
 }
+//渲染函数，
 void renderContens(element* el,OutputArray** outputArray,int x,int y)
 {
     for(int j=0;j<el->h;j++)
@@ -133,6 +139,7 @@ void renderContens(element* el,OutputArray** outputArray,int x,int y)
         for (int i = 0; i < el->w; i++)
         {
             outputArray[x + i][y + j].c = *((el->content) + i + j * el->w);
+            //特判Heading的大写情况
             if(el->name==HEADING&&outputArray[x + i][y + j].c>='a'&&outputArray[x + i][y + j].c<='z')
             {
                 outputArray[x + i][y + j].c=outputArray[x + i][y + j].c-'a'+'A';
